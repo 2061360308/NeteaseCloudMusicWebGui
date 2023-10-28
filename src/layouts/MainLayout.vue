@@ -43,17 +43,17 @@
         </q-item>
 
         <q-item
-          to="/login"
+          to="/playlist"
           clickable
           v-ripple
-          :active="link === '/login'"
+          :active="link === '/playlist'"
           active-class="my-menu-link"
         >
           <q-item-section avatar>
             <q-icon name="send" />
           </q-item-section>
 
-          <q-item-section>Outbox</q-item-section>
+          <q-item-section>我的歌单</q-item-section>
         </q-item>
 
         <q-item
