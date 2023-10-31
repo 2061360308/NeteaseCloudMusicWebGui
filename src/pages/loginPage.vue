@@ -24,7 +24,7 @@
 <script>
 import { defineComponent } from "vue";
 
-import { getQRCode } from "src/api/login";
+import { getQRCode } from "src/api/apis/user.js";
 
 export default defineComponent({
   name: "LoginPage",

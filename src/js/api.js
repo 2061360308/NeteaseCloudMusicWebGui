@@ -140,6 +140,7 @@ async function getPlaylist(uid) {
 
 async function getHotSearch(id) {
   const res = await axios({
+    withCredentials: true,
     url: API + `/search/hot`,
   });
 
@@ -169,7 +170,7 @@ async function getSongUrl(id) {
     url: API + `/song/url/v1?id=${id}&level=exhigh`,
   });
 
-  console.log(API + `/song/url/v1?id=${id}&level=exhigh`);
+  console.log(API + `/song/url/v1?id=${id}&level=exhigh&realIP=116.25.146.177`);
 
   console.log(res);
 

@@ -138,7 +138,6 @@ li {
 
 <script>
 import { defineComponent } from "vue";
-import { api } from "src/js/api.js";
 import { exportFile } from "quasar";
 
 export default defineComponent({
@@ -166,28 +165,46 @@ export default defineComponent({
     };
   },
   async created() {
-    // 判断是否登录
-    const cookie = localStorage.getItem("cookie"); // 获取cookie
-
-    let userData = await api.getLoginStatus(cookie); // 获取登录状态
-    if (userData.data.account !== null) {
-      // 已登录，保存用户信息
-      let app = {};
-      app.USERDATA = userData.data;
-      this.$q.app = app;
-    }
-
     // 获取热门搜索词
-    let hot_search = await api.getHotSearch();
+
+    this.checkLoginStatus();
+
+    let hot_search = await this.$api.other.getHotSearch();
     this.hot_search = hot_search;
   },
   methods: {
-    // 搜索
+    async checkLoginStatus() {
+      // 根据cookie检测是否登录
+      // 判断是否登录
+      const cookie = localStorage.getItem("cookie"); // 获取cookie
 
+      // let userData = await api.getLoginStatus(cookie); // 获取登录状态
+      let userData = await this.$api.user.checkStatus();
+
+      // 未登录
+      /**
+       * Object { code: 800, message: "二维码不存在或已过期", cookie: "..." }
+       */
+
+      if (userData.code === 800) {
+        alert(
+          "您未登录，或许会频繁收到<服务器繁忙>的错误\n提示，这是因为未登录的原因，登录后即可解决。"
+        );
+        return;
+      }
+
+      // 已登录
+      console.log("userData: ", userData);
+      if (userData.data.account !== null) {
+        // 已登录，保存用户信息
+        this.$globalData.userData = userData.data;
+      }
+    },
+    // 搜索
     async search() {
       console.log("this.search_result", this.search_result);
       if (this.search_text !== "") {
-        let result = await api.search(
+        let result = await this.$api.other.search(
           this.search_text,
           this.typeId[this.tabName]
         );
@@ -204,7 +221,7 @@ export default defineComponent({
       let success;
       let information;
 
-      [success, information] = await api.getSongUrl(id);
+      [success, information] = await this.$api.song.getSongUrl(id);
 
       console.log("information", information, "success", success);
 
