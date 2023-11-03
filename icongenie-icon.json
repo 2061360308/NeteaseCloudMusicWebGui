@@ -1,0 +1,9 @@
+{
+  "params": {
+    "include": ["pwa"],
+    "skipTrim": false,
+    "padding": [0, 0],
+    "icon": "icon-base/icon.png"
+  },
+  "assets": []
+}

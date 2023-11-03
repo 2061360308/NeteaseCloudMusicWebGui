@@ -1,4 +1,4 @@
-// 零散接口
+// 其他零散接口
 
 import request from "../base/http";
 
@@ -9,6 +9,14 @@ async function getHotSearch(id) {
   return res.data.result.hots;
 }
 
+async function getDefaultSearch(id) {
+  const res = await request.get(`/search/default`);
+
+  console.log(res.data);
+
+  return res.data;
+}
+
 async function search(keywords, typeId) {
   const res = await request.get(`/search?keywords=${keywords}type=${typeId}`);
 
@@ -16,4 +24,4 @@ async function search(keywords, typeId) {
 }
 // ***************************************************/
 
-export const other = { getHotSearch, search };
+export const other = { getHotSearch, search, getDefaultSearch };

@@ -4,7 +4,7 @@
 import axios from "axios";
 
 // **************根据不同设置api基础路径****************/
-let baseURL = "http://43.134.189.57:3000";
+let baseURL = "https://api.cloudmusic.1think2program.cn";
 
 if (process.env.DEV) {
   console.log(`using Development build`);
@@ -20,6 +20,7 @@ if (process.env.DEV) {
 const request = axios.create({
   timeout: 5000,
   baseURL: baseURL,
+  withCredentials: true, //跨域请求时是否需要使用凭证
 });
 
 //所有请求设置了授权头信息【请求头中设置cookie信息，一直携带，判权】

@@ -1,46 +1,44 @@
 <template>
-  <q-page style="height: 100%">
-
-  </q-page>
+  <div
+    class="avatar-box flex items-center q-mr-sm cursor-pointer"
+    @click="login()"
+  >
+    <q-avatar>
+      <img :src="avatarUrl" />
+    </q-avatar>
+    <div class="nickname text-primary">
+      {{ nickname }}
+    </div>
+  </div>
 </template>
-
-<style lang="scss">
-.search_result,
-.hot-search {
-  width: 90%;
-  max-width: 800px;
-}
-
-li {
-  cursor: pointer;
-}
-
-@media (min-width: 800px) {
-  .hot-search ol {
-    columns: 2;
-    column-gap: 20px;
-  }
-}
-</style>
 
 <script>
 import { defineComponent } from "vue";
-import { exportFile } from "quasar";
 
 export default defineComponent({
-  name: "IndexPage",
+  name: "AvatarBox",
   data() {
     return {
+      isLogin: false,
+      avatarUrl: "https://cdn.quasar.dev/img/boy-avatar.png",
+      nickname: "未登录",
     };
   },
   async created() {
-
     if (this.$globalData.isLogin === null) {
       await this.checkLoginStatus();
     }
 
+    if (this.$globalData.isLogin === true) {
+      console.log(this.$globalData.userData);
+      this.nickname = this.$globalData.userData.profile.nickname;
+      this.avatarUrl = this.$globalData.userData.profile.avatarUrl;
+    }
   },
   methods: {
+    login() {
+      this.$router.push("/login");
+    },
     async checkLoginStatus() {
       // 根据cookie检测是否登录
       // 判断是否登录
@@ -71,5 +69,10 @@ export default defineComponent({
       }
     },
   },
+  // JavaScript code goes here
 });
 </script>
+
+<style>
+/* CSS styles go here */
+</style>

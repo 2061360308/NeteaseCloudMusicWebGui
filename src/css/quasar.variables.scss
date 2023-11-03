@@ -12,13 +12,6 @@
 // to match your app's branding.
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
-$primary: #1976d2;
-$secondary: #26a69a;
-$accent: #9c27b0;
-
-// $text-primary: #090909;
-// $secondary-text: #26a69a;
-
 $dark: #1d1d1d;
 $dark-page: #121212;
 
@@ -26,3 +19,84 @@ $positive: #21ba45;
 $negative: #c10015;
 $info: #31ccec;
 $warning: #f2c037;
+
+$c-mp: #fc3d49; // 主色  material-primary
+$c-mp-light: rgb(255, 143, 150); // 主色亮色 material-primary-light
+$c-ms: #f7f9fc; // 辅色 material-secondary
+$c-ms-light: #fafafa; // 辅色亮色 material-secondary-light
+$c-ms-dark: #f0f3f6; // 辅色暗色 material-secondarydark
+$c-mpt: #ffffff; // 主色背景下文本
+$c-mpt-highlight: #000000; // 主色背景下高亮文本 material-primary-text-highlight
+$c-mst: #787f8d; // 辅色背景下文本 material-secondarytext
+$c-mst-highlight: #000000; // 辅色背景下亮色文本 material-secondary-text-highlight
+
+$primary: $c-mp;
+$secondary: $c-ms;
+$accent: $c-mp;
+
+$text-primary: $c-mpt;
+$secondary-text: $c-mst;
+
+.bg-c-mp {
+  background-color: $c-mp;
+}
+
+.text-c-mp {
+  color: $c-mp;
+}
+
+.bg-c-mp-light {
+  background-color: $c-mp-light;
+}
+
+.text-c-mp-light {
+  color: $c-mp-light;
+}
+
+.bg-c-ms {
+  background-color: $c-ms;
+}
+
+.text-c-ms {
+  color: $c-ms;
+}
+
+.bg-c-ms-light {
+  background-color: $c-ms-light;
+}
+
+.text-c-ms-light {
+  color: $c-ms-light;
+}
+
+.bg-c-ms-dark {
+  background-color: $c-ms-dark;
+}
+
+.text-c-ms-dark {
+  color: $c-ms-dark;
+}
+
+.text-c-mpt {
+  color: $c-mpt;
+}
+
+.text-c-mpt-highlight {
+  color: $c-mpt-highlight;
+}
+
+.text-c-mst {
+  color: $c-mst;
+}
+
+.text-c-mst-highlight {
+  color: $c-mst-highlight;
+}
+
+.q-page {
+  color: $c-mpt;
+  min-width: 800px;
+  max-width: 1100px;
+  margin: auto;
+  background-color: #21ba45;
+}

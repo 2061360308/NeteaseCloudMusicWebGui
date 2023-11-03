@@ -5906,10 +5906,6 @@ export default defineComponent({
   display: flex;
   align-items: center;
   padding: 20px;
-
-  :hover {
-    transform: scale(1.2);
-  }
 }
 
 .playlist .title {
