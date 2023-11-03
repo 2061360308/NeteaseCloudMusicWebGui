@@ -1,7 +1,5 @@
 <template>
-  <q-page style="height: 100%">
-
-  </q-page>
+  <q-page></q-page>
 </template>
 
 <style lang="scss">
@@ -30,15 +28,12 @@ import { exportFile } from "quasar";
 export default defineComponent({
   name: "IndexPage",
   data() {
-    return {
-    };
+    return {};
   },
   async created() {
-
     if (this.$globalData.isLogin === null) {
       await this.checkLoginStatus();
     }
-
   },
   methods: {
     async checkLoginStatus() {

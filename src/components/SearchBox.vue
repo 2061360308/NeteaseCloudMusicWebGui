@@ -1,6 +1,6 @@
 <template>
   <div class="desktop-mode" v-if="$q.platform.is.desktop">
-    <div class="search-box row items-center">
+    <!-- <div class="search-box">
       <q-input
         borderless
         outlined
@@ -22,6 +22,32 @@
           />
         </template>
       </q-input>
+    </div> -->
+    <div class="search-box" style="display: flex">
+      <q-icon
+        class="col-1"
+        style="flex-grow: 0; flex-basis: 35px"
+        size="35px"
+        name="search"
+      />
+      <input
+        v-model="search_text"
+        class="col-auto"
+        style="flex-grow: 2; flex-basis: auto"
+        type="text"
+        :placeholder="default_search_word"
+        @update="search_text_change"
+        @keyup.enter="search_commit"
+        @focus="search_focus"
+      />
+      <q-icon
+        class="col-1"
+        size="30px"
+        v-if="search_text !== ''"
+        style="flex-grow: 0"
+        name="clear"
+        @click="search_text = ''"
+      />
     </div>
   </div>
 
@@ -108,9 +134,25 @@ export default defineComponent({
 <style lang="scss" scoped>
 .desktop-mode {
   .search-box {
+    // background-color: aqua;
     width: 350px;
-    height: 60px;
-    transform: scale(0.7);
+    height: 40px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+
+    border: 1px solid $c-mst;
+    border-radius: 10px;
+
+    input {
+      border: none;
+      outline: none;
+    }
+
+    input :focus {
+      border: none;
+      outline: none;
+    }
   }
 }
 

@@ -1,6 +1,9 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="bg-c-ms-light text-c-mst">
+    <q-header
+      class="bg-c-ms-light text-c-mst"
+      :style="$q.platform.is.desktop ? 'min-width: 800px;' : ''"
+    >
       <q-toolbar class="row">
         <q-btn
           v-if="$q.platform.is.desktop"
@@ -19,6 +22,7 @@
           aria-label="menu"
           @click="toggleLeftDrawer"
         />
+
         <SearchBox />
 
         <q-toolbar-title v-if="$q.platform.is.desktop">
@@ -127,16 +131,21 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container
+      :style="
+        $q.platform.is.desktop ? 'max-width: 1100px;min-width: 800px;' : ''
+      "
+    >
       <router-view />
     </q-page-container>
 
-    <q-footer class="row justify-center items-center bg-c-ms-light text-c-mst">
-      <!-- <q-toolbar>
-        <q-toolbar-title>Footer</q-toolbar-title>
-
-      </q-toolbar> -->
-      <div class="desktop-mode" v-if="$q.platform.is.desktop">
+    <q-footer
+      class="row justify-center items-center bg-c-ms-light text-c-mst"
+      :style="
+        $q.platform.is.desktop ? 'max-width: 1100px;min-width: 800px;' : ''
+      "
+    >
+      <div class="desktop-mode-footer" v-if="$q.platform.is.desktop">
         <div class="play-control row">
           <div class="left .col justify-start">
             <div class="row justify-start items-center">
@@ -183,7 +192,7 @@
               </div>
             </div>
           </div>
-          <div class="center .col row justify-center">
+          <div class="center .col row justify-center items-center">
             <q-icon name="skip_previous" size="40px" color="text-primary" />
             <q-icon
               :name="isplay ? 'pause_circle_outline' : 'play_circle_outline'"
@@ -234,7 +243,7 @@
         </div>
       </div>
 
-      <div class="mobile-mode" v-else>
+      <div class="mobile-mode-footer" v-else>
         <div class="play-control flex align-center">
           <div class="left flex-treble">
             <div class="flex flex-wrap">
@@ -275,14 +284,15 @@
   color: $c-mpt;
 }
 
-footer {
-  max-width: 1100px;
-  min-width: 800px;
+.q-footer,
+.q-header,
+.q-page-container {
   margin: auto;
 }
 
-.desktop-mode {
+.desktop-mode-footer {
   width: 100%;
+  min-width: 800px;
 
   padding: auto;
   .play-control {
@@ -329,7 +339,7 @@ footer {
   }
 }
 
-.mobile-mode {
+.mobile-mode-footer {
   .play-control {
     height: 45px;
     .left {
