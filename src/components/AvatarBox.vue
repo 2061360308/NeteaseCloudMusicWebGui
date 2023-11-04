@@ -44,9 +44,14 @@ export default defineComponent({
       // 判断是否登录
       const cookie = localStorage.getItem("cookie"); // 获取cookie
 
+      if (cookie === null) {
+        this.$globalData.isLogin = false;
+        return;
+      }
+
       console.log("cookie", cookie);
 
-      document.cookie = cookie; // 设置cookie
+      // document.cookie = cookie; // 设置cookie
 
       // let userData = await api.getLoginStatus(cookie); // 获取登录状态
       let loginState = await this.$api.user.getLoginStatus(cookie);

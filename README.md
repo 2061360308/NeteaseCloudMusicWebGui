@@ -63,6 +63,7 @@ See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-
 | MATERIAL_SECONDARYTEXTCOLOR  | Color for text over secondary background | #000000        |
 | MATERIAL_THEME               | Name of theme used                       | light_blue.xml |
 
+```
 $c-mp: #fc3d49; // 主色  material-primary
 $c-mp-light: rgb(255, 143, 150); // 主色亮色 material-primary-light
 $c-ms: #f7f9fc; // 辅色 material-secondary
@@ -72,3 +73,10 @@ $c-mpt: #787f8d; // 主色背景下文本
 $c-mpt-highlight: #000000; // 主色背景下高亮文本 material-primary-text-highlight
 $c-mst: #787f8d; // 辅色背景下文本 material-secondarytext
 $c-mst-highlight: #000000; // 辅色背景下亮色文本 material-secondary-text-highlight
+```
+
+### 近期任务
+
+1. 修正底部 footer 被侧栏遮盖盖问题 ok
+2. 顶部导航栏适配 electron
+3. 首页播放器制作

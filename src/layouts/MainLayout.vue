@@ -1,11 +1,12 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="lHh lpR fFf">
     <q-header
-      class="bg-c-ms-light text-c-mst"
+      class="bg-c-ms-light text-c-mst q-electron-drag"
       :style="$q.platform.is.desktop ? 'min-width: 800px;' : ''"
     >
       <q-toolbar class="row">
         <q-btn
+          class="q-electron-drag--exception"
           v-if="$q.platform.is.desktop"
           flat
           dense
@@ -23,19 +24,43 @@
           @click="toggleLeftDrawer"
         />
 
-        <SearchBox />
+        <SearchBox class="q-electron-drag--exception" />
 
         <q-toolbar-title v-if="$q.platform.is.desktop">
           网易云音乐
         </q-toolbar-title>
 
-        <div class="row items-center" v-if="$q.platform.is.desktop">
+        <div
+          class="row items-center q-electron-drag--exception"
+          v-if="$q.platform.is.desktop"
+        >
           <div class="row items-center">
             <!-- 头像 -->
             <AvatarBox />
             <q-icon size="25px" class="q-mx-sm" name="mail_outline"></q-icon>
             <q-icon size="25px" class="q-mx-sm" name="settings"></q-icon>
             <q-icon size="25px" class="q-mx-sm" name="color_lens"></q-icon>
+          </div>
+          <!-- electron环境下的最大最小关闭按钮 -->
+          <div class="row items-center" v-if="$q.platform.is.electron">
+            <q-icon
+              size="25px"
+              class="q-mx-sm"
+              name="minimize"
+              @click="minimize"
+            ></q-icon>
+            <q-icon
+              size="25px"
+              class="q-mx-sm"
+              name="crop_square"
+              @click="toggleMaximize"
+            ></q-icon>
+            <q-icon
+              size="25px"
+              class="q-mx-sm"
+              name="close"
+              @click="closeApp"
+            ></q-icon>
           </div>
         </div>
 
@@ -139,13 +164,28 @@
       <router-view />
     </q-page-container>
 
-    <q-footer
-      class="row justify-center items-center bg-c-ms-light text-c-mst"
-      :style="
-        $q.platform.is.desktop ? 'max-width: 1100px;min-width: 800px;' : ''
-      "
-    >
-      <div class="desktop-mode-footer" v-if="$q.platform.is.desktop">
+    <q-footer class="row justify-center items-center bg-c-ms-light text-c-mst">
+      <div class="progress-bar text-c-mst">
+        <div>0.00</div>
+        <div class="slider">
+          <q-slider
+            v-model="standard"
+            :step="0.01"
+            :min="0"
+            :max="3"
+            color="green"
+          />
+        </div>
+        <div>3.00</div>
+      </div>
+
+      <div
+        class="desktop-mode-footer"
+        v-if="$q.platform.is.desktop"
+        :style="
+          $q.platform.is.desktop ? 'max-width: 1300px;min-width: 800px;' : ''
+        "
+      >
         <div class="play-control row">
           <div class="left .col justify-start">
             <div class="row justify-start items-center">
@@ -350,6 +390,22 @@
     }
   }
 }
+
+footer {
+  .progress-bar {
+    width: 100%;
+    font-size: 15px;
+    // background-color: antiquewhite;
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    grid-gap: 5px;
+    padding: 0 10px;
+
+    .slider {
+      height: 15px;
+    }
+  }
+}
 </style>
 
 <script>
@@ -423,7 +479,27 @@ export default defineComponent({
   setup() {
     const leftDrawerOpen = ref(false);
 
+    function minimize() {
+      if (process.env.MODE === "electron") {
+        console.log(window);
+        window.myWindowAPI.minimize();
+      }
+    }
+    function toggleMaximize() {
+      if (process.env.MODE === "electron") {
+        window.myWindowAPI.toggleMaximize();
+      }
+    }
+    function closeApp() {
+      if (process.env.MODE === "electron") {
+        window.myWindowAPI.close();
+      }
+    }
+
     return {
+      minimize,
+      toggleMaximize,
+      closeApp,
       essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {

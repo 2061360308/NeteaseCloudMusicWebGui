@@ -2,10 +2,7 @@ import request from "../base/http";
 
 // 检查登录状态
 async function getLoginStatus(cookie) {
-  const res = await request.post(`/login/status?timestamp=${Date.now()}`, {
-    timestamp: Date.now(),
-    cookie: cookie,
-  });
+  const res = await request.post(`/login/status`);
 
   return res.data;
 }

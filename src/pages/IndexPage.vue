@@ -1,5 +1,5 @@
 <template>
-  <q-page></q-page>
+  <q-page> </q-page>
 </template>
 
 <style lang="scss">
@@ -44,6 +44,11 @@ export default defineComponent({
       console.log("cookie", cookie);
 
       document.cookie = cookie; // 设置cookie
+
+      if (cookie === null) {
+        this.$globalData.isLogin = false;
+        return;
+      }
 
       // let userData = await api.getLoginStatus(cookie); // 获取登录状态
       let loginState = await this.$api.user.getLoginStatus(cookie);
