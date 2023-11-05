@@ -1,4 +1,3 @@
-/*
-export function someAction (context) {
+export function currentPic(context) {
+  return context.state.globalData.currentPic;
 }
-*/

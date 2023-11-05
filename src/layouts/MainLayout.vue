@@ -169,7 +169,7 @@
         <div>0.00</div>
         <div class="slider">
           <q-slider
-            v-model="standard"
+            v-model="progressNum"
             :step="0.01"
             :min="0"
             :max="3"
@@ -466,6 +466,7 @@ export default defineComponent({
     return {
       isplay: false,
       volume: 50,
+      progressNum: 0,
     };
   },
 

@@ -39,8 +39,8 @@ request.interceptors.request.use(
     // config[baseURL,[data,[headers,[method,[timeout,[url]   等
     //        基础地址,请求参数,头部, 请求方式, 超时,  请求地址  等
 
-    config.headers.Cookie = localStorage.getItem("cookie");
-    console.log("请求拦截器", localStorage.getItem("cookie"));
+    // config.headers.Cookie = localStorage.getItem("cookie");
+    // console.log("请求拦截器", localStorage.getItem("cookie"));
 
     // config.headers.Cookie = "110110110110110110";
     return config;
