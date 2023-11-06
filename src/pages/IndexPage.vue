@@ -1,6 +1,6 @@
 <template>
   <q-page :style="backgroundStyle">
-    <div class="top-menu">
+    <div class="top-menu q-electron-drag">
       <q-btn flat dense icon="keyboard_arrow_down"></q-btn>
       <q-btn flat dense icon="open_in_full"></q-btn>
       <div></div>
@@ -40,12 +40,17 @@
       <div class="progress-bar">
         <div>{{ progress }}</div>
         <div class="slider">
+          <!--加了一个延迟输入，不然拖动进度条太抖-->
           <q-slider
-            v-model="sliderValue"
+            :model-value="sliderValue"
+            @change="
+              (val) => {
+                sliderValue = val;
+              }
+            "
             :step="0.01"
             :min="0"
             :max="durationNum"
-            @change="changeSliderValue"
             color="green"
           />
         </div>
@@ -73,7 +78,7 @@
               >
                 <div class="title-box">
                   <div class="title text-h6 text-weight-bold">
-                    我的歌名很长很长很长很长很长很长
+                    {{ songName }}
                   </div>
                 </div>
                 <div class="row items-center">
@@ -106,13 +111,17 @@
             </div>
           </div>
           <div class="center .col row justify-center items-center">
-            <q-icon name="skip_previous" size="40px" />
+            <q-icon
+              name="skip_previous"
+              size="40px"
+              @click="$musicPlayer.prev()"
+            />
             <q-icon
               :name="isplay ? 'pause_circle_outline' : 'play_circle_outline'"
               size="60px"
               @click="playClick"
             />
-            <q-icon name="skip_next" size="40px" />
+            <q-icon name="skip_next" size="40px" @click="$musicPlayer.next()" />
           </div>
           <div class="right .col justify-end">
             <div class="row items-center justify-end">
@@ -130,6 +139,7 @@
                 style="margin-right: 10px"
                 name="queue_music"
                 size="25px"
+                @click="isListShow = true"
               />
               <div class="sound row justify-start items-center">
                 <q-icon
@@ -162,7 +172,7 @@
                 />
               </q-avatar>
               <div class="title text-h7 basis-xl flex align-center">
-                我的歌名很长很长很长很长很长很长
+                {{ songName }}
               </div>
             </div>
           </div>
@@ -184,8 +194,119 @@
         </div>
       </div>
     </div>
+
+    <q-dialog v-model="isListShow" class="playListPanel" position="right">
+      <q-list bordered>
+        <q-item-label header class="header">
+          <div class="header-name">
+            播放列表 {{ $musicPlayer.playList.length }}
+          </div>
+          <div></div>
+          <!-- <div>
+            <q-btn
+              flat
+              dense
+              icon="hotel_class"
+              label="收藏全部"
+              size="12px"
+              @click="isListShow = false"
+            ></q-btn>
+            <q-btn
+              flat
+              dense
+              icon="delete"
+              label="清空"
+              size="12px"
+              @click="isListShow = false"
+            ></q-btn>
+          </div> -->
+        </q-item-label>
+        <!-- v-for="(item, index) in $musicPlayer.playList" -->
+        <q-virtual-scroll
+          :items="$musicPlayer.playList"
+          class="items-box"
+          separator
+          v-slot="{ item, index }"
+        >
+          <q-item
+            clickable
+            v-ripple
+            :data-id="item.id"
+            :data-index="index"
+            @click="swicthSong"
+          >
+            <q-item-section avatar>
+              <q-img :src="item.al.picUrl" loading="lazy" />
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label :title="item.name">{{
+                item.name.length > 10
+                  ? item.name.slice(0, 10) + "..."
+                  : item.name
+              }}</q-item-label>
+              <!--显示相关音乐家，字符限定最高20，鼠标移动提示完整内容-->
+              <q-item-label
+                caption
+                lines="1"
+                :title="item.ar.map((item) => item.name).join('/ ')"
+                >{{
+                  item.ar.map((item) => item.name).join("/ ").length > 20
+                    ? item.ar
+                        .map((item) => item.name)
+                        .join("/ ")
+                        .slice(0, 20) + "..."
+                    : item.ar.map((item) => item.name).join("/ ")
+                }}</q-item-label
+              >
+            </q-item-section>
+
+            <q-item-section side top class="duration">
+              <q-item-label caption>{{
+                this.formatSeconds(item.dt / 1000)
+              }}</q-item-label>
+            </q-item-section>
+            <q-item-section side top class="option-button">
+              <div style="display: grid; grid-template-columns: repeat(1fr, 3)">
+                <q-btn-group flat>
+                  <q-btn
+                    flat
+                    rounded
+                    padding="2px"
+                    size="md"
+                    icon="insert_link"
+                    @click.stop="handleClick"
+                  />
+                  <q-btn
+                    flat
+                    rounded
+                    padding="2px"
+                    size="md"
+                    icon="favorite_border"
+                    @click.stop="handleClick"
+                  />
+                  <q-btn
+                    flat
+                    rounded
+                    padding="2px"
+                    size="md"
+                    icon="star_border"
+                    @click.stop="handleClick"
+                  />
+                </q-btn-group>
+              </div>
+            </q-item-section> </q-item
+        ></q-virtual-scroll>
+      </q-list>
+    </q-dialog>
   </q-page>
 </template>
+
+<!--
+
+
+
+ -->
 
 <style lang="scss">
 // 头部
@@ -337,6 +458,16 @@
     }
   }
 
+  /**TODO */
+
+  .q-icon {
+    transition: transform 0.3s ease-in-out; /* 动画过渡 */
+  }
+
+  .q-icon:hover {
+    transform: scale(1.2); /* 鼠标悬停时放大到原来的 1.2 倍 */
+  }
+
   .mobile-mode-footer {
     .play-control {
       height: 45px;
@@ -362,6 +493,55 @@
     }
   }
 }
+
+.playListPanel {
+  .header {
+    display: grid;
+    z-index: 10000;
+    position: sticky;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    grid-template-columns: 200px 1fr 200px;
+
+    .header-name {
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+  .q-list {
+    width: 450px;
+    height: 70%;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.6);
+
+    display: grid;
+    grid-template-rows: 50px, 1fr;
+    .items-box > * {
+      max-width: 100%;
+    }
+    .items-box {
+      height: auto;
+      width: 100%;
+      box-sizing: border-box;
+      .q-item {
+        .option-button {
+          display: none;
+        }
+        .duration {
+          display: block;
+        }
+      }
+      .q-item:hover {
+        .option-button {
+          display: block;
+        }
+        .duration {
+          display: none;
+        }
+      }
+    }
+  }
+}
 </style>
 
 <script>
@@ -370,6 +550,9 @@ import { defineComponent } from "vue";
 
 import ColorThief from "colorthief";
 // import { text } from "body-parser";
+// import VueLazyload from "vue-lazyload";
+
+// Vue.use(VueLazyload);
 
 export default defineComponent({
   name: "IndexPage",
@@ -385,7 +568,7 @@ export default defineComponent({
       currentPic: "",
       gradientColor: "$c-ms", // 根据封面动态计算出的渐变色
       contactRotate: -60,
-      volume: 50,
+      isListShow: false,
     };
   },
   computed: {
@@ -407,11 +590,22 @@ export default defineComponent({
         this.$musicPlayer.seek(value);
       },
     },
+    volume: {
+      get() {
+        return this.$musicPlayer.volume;
+      },
+      set(value) {
+        this.$musicPlayer.setVolume(value);
+      },
+    },
     duration() {
       return this.formatSeconds(this.$musicPlayer.duration);
     },
     durationNum() {
       return this.$musicPlayer.duration;
+    },
+    songName() {
+      return this.$musicPlayer.name;
     },
     currentLyricLineIndex() {
       return this.$musicPlayer.currentLyricLineIndex;
@@ -509,7 +703,10 @@ export default defineComponent({
       }
     },
     formatSeconds(value) {
-      console.log("formatSeconds", value);
+      /* 格式化时间
+       * @param value 秒数
+       * @return (00:)00:00
+       */
       let secondTime = parseInt(value);
       let minuteTime = 0;
       let hourTime = 0;
@@ -564,15 +761,10 @@ export default defineComponent({
       } else {
         this.$musicPlayer.continue();
       }
-
-      // if (this.currentLyricControl) {
-      //   this.currentLyricControl.togglePlay();
-      // }
-
-      this.$musicPlayer.playState = !this.$musicPlayer.playState;
     },
-    changeSliderValue(value) {
-      console.log("changeSliderValue", value);
+    swicthSong(event) {
+      const index = event.currentTarget.dataset.index;
+      this.$musicPlayer.switchSongTo(index);
     },
     async initPlayList() {
       // 初始化播放列表

@@ -58,7 +58,14 @@ request.interceptors.request.use(
 //响应拦截器（对请求结束后进行一些操作，，例如:统一收集报错）
 request.interceptors.response.use(
   //请求成功
-  (res) => (res.status === 200 ? Promise.resolve(res) : Promise.reject(res)),
+  (res) => {
+    if (res.status === 200) {
+      console.log(res); // 打印响应对象
+      return Promise.resolve(res);
+    } else {
+      return Promise.reject(res);
+    }
+  },
   //请求失败
   (error) => {
     //可根据不同的状态去区分不同的错误，达到不同效果

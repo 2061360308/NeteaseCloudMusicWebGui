@@ -13,10 +13,15 @@ export default function (api) {
       stop: () => {},
     }, // 播放器
     lyric: null, // 当前歌词文本
-    lyricController: ref(null), // 当前歌词控制器
+    /**
+     * 开始的时候会调用一次停止。所以初始化一个空值的stop方法
+     */
+    lyricController: ref({ stop: () => {} }), // 当前歌词控制器
     currentLyricLineIndex: ref(0), // 当前歌词行数
     duration: ref(0), // 歌曲总时长
     progress: ref(0), // 当前播放时间
+    name: ref(""), // 当前歌曲名称
+    volume: 50, // 音量
     scheduleInterval: null, // 获取播放进度的定时器
   };
 }
